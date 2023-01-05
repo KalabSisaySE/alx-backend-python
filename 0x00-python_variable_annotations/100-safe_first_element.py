@@ -2,11 +2,11 @@
 """the `100-safe_first_element` module
 defines the function `safe_first_element`
 """
-from typing import Iterable, Union, Any
+from typing import Sequence, Union, Any
 
 
 # The types of the elements of the input are not know
-def safe_first_element(lst: Iterable[Any]) -> Union[Any, None]:
+def safe_first_element(lst: Sequence[Any]) -> Union[Any, None]:
     """if `lst` is a `list` returns first element else `None`"""
     if lst:
         return lst[0]
