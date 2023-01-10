@@ -4,10 +4,10 @@ defines the function async_generator
 """
 import asyncio
 from random import random
-from typing import AsyncGenerator
+from typing import AsyncIterator
 
 
-async def async_generator() -> AsyncGenerator[float, None]:
+async def async_generator() -> AsyncIterator[float]:
     """yields random numbers between 0 and 10"""
     for i in range(10):
         yield (random() * 10)
