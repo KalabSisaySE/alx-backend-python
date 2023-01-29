@@ -1,12 +1,9 @@
 #!/usr/bin/env python3
 import unittest
 from parameterized import parameterized
-from utils import requests
-from unittest.mock import Mock, MagicMock, patch
 
 access_nested_map = __import__("utils").access_nested_map
 get_json = __import__("utils").get_json
-
 
 class TestAccessNestedMap(unittest.TestCase):
     """Test cases for the `access_nested_map` function
@@ -34,8 +31,6 @@ class TestAccessNestedMap(unittest.TestCase):
 class TestGetJson(unittest.TestCase):
     """test cases for the `get_json` function from `utils` module"""
 
-    # @unittest.mock.patch.object(requests, 'get', )
-    # @patch('requests.get')
     @parameterized.expand(
         [
             ("http://example.com", {"payload": True}),
@@ -44,10 +39,7 @@ class TestGetJson(unittest.TestCase):
     )
     def test_get_json(self, test_url, test_payload):
         """mocks requests to test the `get_json` function"""
-        requests.get = Mock()
-        mocked_response = MagicMock()
-        mocked_response.json.return_value = test_payload
-        requests.get.return_value = mocked_response
-
-        self.assertEqual(get_json(test_url), test_payload)
-        requests.get.assert_called_once_with(test_url)
+        with unittest.mock.patch('requests.get') as mocked_request:
+            mocked_request.configure_mock(**{'json.return_value': test_payload})
+            self.assertEqual(get_json(test_url), test_payload)
+            mocked_request.assert_called_once_with(test_url)
