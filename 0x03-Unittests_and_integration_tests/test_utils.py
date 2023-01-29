@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 import unittest
 from parameterized import parameterized
-from unittest.mock import Mock,  patch
+from unittest.mock import Mock, patch
+
 access_nested_map = __import__("utils").access_nested_map
 get_json = __import__("utils").get_json
+memoize = __import__("utils").memoize
 
 
 class TestAccessNestedMap(unittest.TestCase):
@@ -40,7 +42,31 @@ class TestGetJson(unittest.TestCase):
     )
     def test_get_json(self, test_url, test_payload):
         """mocks requests to test the `get_json` function"""
-        attrs = {'json.return_value': test_payload}
-        with patch('requests.get', return_value=Mock(**attrs)) as mocked_req:
+        attrs = {"json.return_value": test_payload}
+        with patch("requests.get", return_value=Mock(**attrs)) as mocked_req:
             self.assertEqual(get_json(test_url), test_payload)
             mocked_req.assert_called_once_with(test_url)
+
+
+class TestMemoize(unittest.TestCase):
+    """test cases for testing `memoize` function from `utils` module"""
+
+    def test_memoize(self):
+        """tests that a_method is memoized
+        i.e a method will computed only on the first call
+        for subsequent calls the cached result will be returned
+        """
+
+        class TestClass:
+            def a_method(self):
+                return 42
+
+            @memoize
+            def a_property(self):
+                return self.a_method()
+
+        testclass = TestClass()
+        with patch.object(TestClass, "a_method") as mocked_a_met:
+            testclass.a_property()
+            testclass.a_property()
+            mocked_a_met.assert_called_once()
