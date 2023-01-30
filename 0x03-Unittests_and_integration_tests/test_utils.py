@@ -53,14 +53,14 @@ class TestMemoize(unittest.TestCase):
 
     def test_memoize(self):
         """tests that a_method is memoized
-        i.e a method will computed only on the first call
+        i.e a method will be computed only on the first call and
         for subsequent calls the cached result will be returned
         """
 
         class TestClass:
-            """test class"""
+            """test class defines two methods `a_method` and `a_property`"""
             def a_method(self):
-                """returns `42`"""
+                """returns the number `42`"""
                 return 42
 
             @memoize
