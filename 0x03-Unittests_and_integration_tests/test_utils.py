@@ -32,7 +32,7 @@ class TestAccessNestedMap(unittest.TestCase):
 
 
 class TestGetJson(unittest.TestCase):
-    """test cases for the `get_json` function from `utils` module"""
+    """Tests the `get_json` function."""
 
     @parameterized.expand(
         [
@@ -40,12 +40,16 @@ class TestGetJson(unittest.TestCase):
             ("http://holberton.io", {"payload": False}),
         ]
     )
-    def test_get_json(self, test_url, test_payload):
-        """mocks requests to test the `get_json` function"""
+    def test_get_json(
+        self,
+        test_url: str,
+        test_payload: Dict,
+    ) -> None:
+        """Tests `get_json`'s output."""
         attrs = {"json.return_value": test_payload}
-        with patch("requests.get", return_value=Mock(**attrs)) as mocked_req:
+        with patch("requests.get", return_value=Mock(**attrs)) as req_get:
             self.assertEqual(get_json(test_url), test_payload)
-            mocked_req.assert_called_once_with(test_url)
+            req_get.assert_called_once_with(test_url)
 
 
 class TestMemoize(unittest.TestCase):
@@ -59,6 +63,7 @@ class TestMemoize(unittest.TestCase):
 
         class TestClass:
             """test class defines two methods `a_method` and `a_property`"""
+
             def a_method(self):
                 """returns the number `42`"""
                 return 42
