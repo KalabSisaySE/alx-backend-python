@@ -2,6 +2,7 @@
 import unittest
 from parameterized import parameterized
 from unittest.mock import Mock, patch
+from typing import Dict
 
 access_nested_map = __import__("utils").access_nested_map
 get_json = __import__("utils").get_json
